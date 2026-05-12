@@ -31,7 +31,7 @@ model User {
   missions        Mission[]     @relation("FounderMissions")
   missionSwipes   MissionSwipe[]
   profileSwipes   ProfileSwipe[] @relation("FounderSwipes")
-  receivedSwipes  ProfileSwipe[] @relation("DeveloperSwipes")
+  receivedSwipes  ProfileSwipe[] @relation("DeveloperSwiped")
   developerMatches Match[]      @relation("DeveloperMatches")
   founderMatches   Match[]      @relation("FounderMatches")
 }
@@ -98,7 +98,7 @@ model ProfileSwipe {
   founderId   String
   developerId String
   founder     User @relation("FounderSwipes", fields: [founderId], references: [id])
-  developer   User @relation("DeveloperSwipes", fields: [developerId], references: [id])
+  developer   User @relation("DeveloperSwiped", fields: [developerId], references: [id])
 
   @@unique([founderId, developerId])
 }

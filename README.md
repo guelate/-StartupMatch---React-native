@@ -81,3 +81,6 @@ graph TD
 
 ## Get Started
 ⏳ WORK IN PROGRESS ⏳
+TODO: 
+for prisma: migrate, client, seed
+doc: react navigation, react native, nestJS 
