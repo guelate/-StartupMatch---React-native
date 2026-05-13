@@ -83,4 +83,4 @@ graph TD
 ⏳ WORK IN PROGRESS ⏳
 TODO: 
 for prisma: migrate, client, seed
-doc: react navigation, react native, nestJS 
+doc: expo.dev react navigation, react native, nestJS 
