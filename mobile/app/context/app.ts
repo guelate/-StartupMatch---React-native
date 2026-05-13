@@ -55,3 +55,4 @@ interface AppContextType {
     setPendingSwipes: (swipes: Swipe[]) => void
   }
   
+  //TODO: finish
