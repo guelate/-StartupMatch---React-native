@@ -2,61 +2,61 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { CreateMissionData, UpdateMissionData } from '@/app/types/mission'
 import { request } from "./api"
 
-//Query keys
+// Query keys
 export const missionKeys = {
-    all: ["missions"] as const,
-    ById: (id: string) => ["mission", id] as const,
+  all: ["missions"] as const,
+  byId: (id: string) => ["missions", id] as const,  // ✅ byId + missions
 }
 
-//get all missions
+// GET all missions
 export const useMissions = () => {
-
-    return useQuery({
-        queryKey: missionKeys.all,
-        queryFn: () => request("/missions"),
-    })
+  return useQuery({
+    queryKey: missionKeys.all,
+    queryFn: () => request("/missions"),
+  })
 }
 
-//create mission
+// POST create mission
 export const useCreateMission = () => {
+  const queryClient = useQueryClient()
 
-    const queryClient = useQueryClient();
-
-    return useMutation({
-        mutationFn: (data: CreateMissionData) =>
-            request("/missions", {
-                method: "POST",
-                body: JSON.stringify(data),
-            }),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: missionKeys.all })
-        }
-    })
+  return useMutation({
+    mutationFn: (data: CreateMissionData) =>
+      request("/missions", {
+        method: "POST",
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: missionKeys.all })
+    },
+  })
 }
 
-//update mission
+// PATCH update mission
 export const useUpdateMission = () => {
+  const queryClient = useQueryClient()  // ✅ ajouté
 
-    const queryClient = useQueryClient();
-
-    return useMutation({
-        mutationFn: ({ id, data }: { id: String, data: UpdateMissionData }) =>
-            request(`/mission/${id}`, {
-                method: "PATCH",
-                body: JSON.stringify(data),
-            })
-    })
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string, data: UpdateMissionData }) =>  // ✅ string minuscule
+      request(`/missions/${id}`, {  // ✅ missions avec s
+        method: "PATCH",
+        body: JSON.stringify(data),
+      }),
+    onSuccess: () => {  // ✅ ajouté
+      queryClient.invalidateQueries({ queryKey: missionKeys.all })
+    },
+  })
 }
 
-//delete mission
+// DELETE mission
 export const useDeleteMission = () => {
-    const queryClient = useQueryClient()
+  const queryClient = useQueryClient()
 
-    return useMutation({
-        mutationFn: (id: string) =>
-            request(`/missions/${id}`, { method: 'DELETE' }),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: missionKeys.all })
-        },
-    })
+  return useMutation({
+    mutationFn: (id: string) =>
+      request(`/missions/${id}`, { method: 'DELETE' }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: missionKeys.all })
+    },
+  })
 }

@@ -1,34 +1,93 @@
-import { Slot, useRouter, useSegments } from "expo-router";
-import { useEffect } from "react";
+// import { Slot, useRouter, useSegments } from "expo-router"
+// import { useEffect } from "react"
+
+// import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+// import { AuthProvider, useAuth } from "./context/auth"
+// import { AppProvider } from "./context/app"
+
+// const queryClient = new QueryClient()
+
+// function RootLayoutNav() {
+//   const { isAuthenticated } = useAuth()
+//   const router = useRouter()
+//   const segments = useSegments()
+
+//   useEffect(() => {
+//     const inAuthGroup = segments[0] === "(auth)"
+//     const inAppGroup = segments[0] === "(app)"
+
+//     if (!isAuthenticated && inAppGroup) {
+//       router.replace("/(auth)/login")
+//     }
+
+//     if (isAuthenticated && inAuthGroup) {
+//       router.replace("/(app)/discover")
+//     }
+
+//   }, [isAuthenticated, segments])
+
+//   return <Slot />
+// }
+
+// export default function RootLayout() {
+//   return (
+//     <QueryClientProvider client={queryClient}>
+//       <AuthProvider>
+//         <AppProvider>
+//           <RootLayoutNav />
+//         </AppProvider>
+//       </AuthProvider>
+//     </QueryClientProvider>
+//   )
+// }
+
+import { Slot, useRouter, useSegments } from "expo-router"
+import { useEffect, useState } from "react"
+// import { AuthProvider, useAuth } from "../context/auth"
+// import { AppProvider } from "../context/app"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { AuthProvider, useAuth } from "./context/auth"
+import { AppProvider } from "./context/app"
+
+const queryClient = new QueryClient()
 
 function RootLayoutNav() {
-
-  const { isAuthentificated } = useAuth();
+  const { isAuthenticated } = useAuth()
   const router = useRouter()
   const segments = useSegments()
+  const [isReady, setIsReady] = useState(false)  // ← ajout
 
   useEffect(() => {
-    const inAuthGroup = segments[0] === '(auth)'
-    const inAppGroup = segments[0] === '(app)'
+    setIsReady(true)  // ← le layout est monté
+  }, [])
 
-    if (!isAuthentificated && inAppGroup) {
-      router.replace('/(auth)/login')
+  useEffect(() => {
+    if (!isReady) return  // ← attendre que le layout soit prêt
+
+    const inAuthGroup = segments[0] === "(auth)"
+    const inAppGroup = segments[0] === "(app)"
+
+    if (!isAuthenticated && inAppGroup) {
+      router.replace("/(auth)/login")
     }
 
-    if (isAuthentificated && inAppGroup) {
-      router.replace('/(app)')
+    if (isAuthenticated && inAuthGroup) {
+      router.replace("/(app)/discover")
     }
 
-  }, [isAuthentificated, segments])
+  }, [isAuthenticated, segments, isReady])  // ← ajouter isReady
 
   return <Slot />
-
 }
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <RootLayoutNav />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <AppProvider>
+          <RootLayoutNav />
+        </AppProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   )
 }
