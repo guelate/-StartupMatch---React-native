@@ -29,6 +29,7 @@ export default function MatchesScreen() {
         )
     }
 
+    //match null or undifined
     if (!matches?.length) {
         return (
             <View style={styles.centered}>
@@ -64,7 +65,7 @@ export default function MatchesScreen() {
                     <View style={styles.card}>
 
                         {isFounder ? (
-                            // FOUNDER voit les devs avec qui il a matché
+                            // FOUNDER see devs matched
                             <>
                                 <View style={styles.cardHeader}>
                                     <Text style={styles.cardAvatar}>💻</Text>
@@ -97,7 +98,7 @@ export default function MatchesScreen() {
                                 </View>
                             </>
                         ) : (
-                            // DEVELOPER voit les missions avec lesquelles il a matché
+                            // DEVELOPER see missions matched
                             <>
                                 <View style={styles.cardHeader}>
                                     <Text style={styles.cardAvatar}>🚀</Text>
