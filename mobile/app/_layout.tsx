@@ -31,7 +31,7 @@ function RootLayoutNav() {
 
   }, [isAuthenticated, segments, isReady])  
 
-  return <Slot />
+  return <Slot /> //render the content routes 
 }
 
 export default function RootLayout() {
