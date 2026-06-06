@@ -1,19 +1,24 @@
 import { API_URL } from "@/constants"
+import * as SecureStore from "expo-secure-store"
 
-//utility function to make requests 
+//function to make authenticated API requests using the stored JWT token
 export const request = async (endpoint: string, options?: RequestInit) => {
-    const response = await fetch(`${API_URL}${endpoint}`, {
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers,
-        },
-    })
+  // Get JWT token from SecureStore
+  const token = await SecureStore.getItemAsync("token")
 
-    if (!response.ok) {
-        throw new Error(`HTTP error: ${response.status}`)
-    }
+  const response = await fetch(`${API_URL}${endpoint}`, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      // Add Authorization header if token exists
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...options?.headers,
+    },
+  })
 
-    return response.json()
+  if (!response.ok) {
+    throw new Error(`HTTP error: ${response.status}`)
+  }
 
+  return response.json()
 }

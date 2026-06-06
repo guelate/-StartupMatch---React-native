@@ -1,36 +1,65 @@
-import { createContext, useContext, useState } from "react" 
+import { createContext, useContext, useState, useEffect } from "react"
+import * as SecureStore from "expo-secure-store"
 import { User } from "../types/user"
 
-
 interface AuthContextType {
-  user: User | null            
+  user: User | null
   token: string | null
-  isAuthenticated: boolean     
-  isFounder: boolean      
-  isDeveloper: boolean   
-  setUser: (user: User) => void  
-  setToken: (token: string) => void  
+  isAuthenticated: boolean
+  isFounder: boolean
+  isDeveloper: boolean
+  setUser: (user: User) => void
+  setToken: (token: string) => void
   logout: () => void
 }
 
 const AuthContext = createContext<AuthContextType | null>(null)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)  
-  const [token, setToken] = useState<string | null>(null) 
+  const [user, setUserState] = useState<User | null>(null)
+  const [token, setTokenState] = useState<string | null>(null)
 
-  const logout = () => {
-    setUser(null)
-    setToken(null)
+  // Load token 
+  useEffect(() => {
+    const loadStoredAuth = async () => {
+      const storedToken = await SecureStore.getItemAsync("token")
+      const storedUser = await SecureStore.getItemAsync("user")
+
+      if (storedToken && storedUser) {
+        setTokenState(storedToken)
+        setUserState(JSON.parse(storedUser))
+      }
+    }
+    loadStoredAuth()
+  }, [])
+
+  // Save token 
+  const setToken = async (token: string) => {
+    await SecureStore.setItemAsync("token", token)
+    setTokenState(token)
+  }
+
+  // Save user
+  const setUser = async (user: User) => {
+    await SecureStore.setItemAsync("user", JSON.stringify(user))
+    setUserState(user)
+  }
+
+  // Clear SecureStore on logout
+  const logout = async () => {
+    await SecureStore.deleteItemAsync("token")
+    await SecureStore.deleteItemAsync("user")
+    setTokenState(null)
+    setUserState(null)
   }
 
   return (
     <AuthContext.Provider value={{
       user,
       token,
-      isAuthenticated: !!user,  
-      isFounder: user?.role === 'FOUNDER',      
-      isDeveloper: user?.role === 'DEVELOPER',
+      isAuthenticated: !!user,
+      isFounder: user?.role === "FOUNDER",
+      isDeveloper: user?.role === "DEVELOPER",
       setUser,
       setToken,
       logout,
