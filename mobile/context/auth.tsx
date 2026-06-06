@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react"
-import * as SecureStore from "expo-secure-store"
 import { User } from "../types/user"
+import { storage } from "../utils/storage"
 
 interface AuthContextType {
   user: User | null
@@ -19,11 +19,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUserState] = useState<User | null>(null)
   const [token, setTokenState] = useState<string | null>(null)
 
-  // Load token 
+  // Load stored auth on app start
   useEffect(() => {
     const loadStoredAuth = async () => {
-      const storedToken = await SecureStore.getItemAsync("token")
-      const storedUser = await SecureStore.getItemAsync("user")
+      const storedToken = await storage.getItem("token")
+      const storedUser = await storage.getItem("user")
 
       if (storedToken && storedUser) {
         setTokenState(storedToken)
@@ -33,22 +33,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     loadStoredAuth()
   }, [])
 
-  // Save token 
+  // Save token to storage
   const setToken = async (token: string) => {
-    await SecureStore.setItemAsync("token", token)
+    await storage.setItem("token", token)
     setTokenState(token)
   }
 
-  // Save user
+  // Save user to storage
   const setUser = async (user: User) => {
-    await SecureStore.setItemAsync("user", JSON.stringify(user))
+    await storage.setItem("user", JSON.stringify(user))
     setUserState(user)
   }
 
-  // Clear SecureStore on logout
+  // Clear storage on logout
   const logout = async () => {
-    await SecureStore.deleteItemAsync("token")
-    await SecureStore.deleteItemAsync("user")
+    await storage.deleteItem("token")
+    await storage.deleteItem("user")
     setTokenState(null)
     setUserState(null)
   }

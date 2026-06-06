@@ -7,8 +7,10 @@ import {
     ActivityIndicator,
   } from "react-native"
   import { usePendingSwipes, useRespondToSwipe } from "../../services/swipes"
-import { useAuth } from "../context/auth"
+import { useAuth } from "@/context/auth"
   
+
+//TODO: refactoring
   export default function PendingScreen() {
     const { isFounder } = useAuth()
     const { data: pendingSwipes, isLoading, error } = usePendingSwipes()

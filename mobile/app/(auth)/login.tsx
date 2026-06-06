@@ -9,8 +9,9 @@ import {
 } from "react-native"
 import { useRouter } from "expo-router"
 import { authService } from "../../services/auth"
-import { useAuth } from "../context/auth"
+import { useAuth } from "@/context/auth"
 
+//TODO: refactoring
 export default function LoginScreen() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")

@@ -5,10 +5,10 @@ import {
     StyleSheet,
     ActivityIndicator,
 } from "react-native"
-import { useAuth } from "../context/auth"
 import { useMatches } from "@/services/matches"
+import { useAuth } from "@/context/auth"
 
-
+//TODO: refactoring
 export default function MatchesScreen() {
     const { isFounder } = useAuth()
     const { data: matches, isLoading, error } = useMatches()

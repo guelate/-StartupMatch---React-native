@@ -1,5 +1,5 @@
+import { Match, MissionSwipe } from "@/types/match"
 import { createContext, useContext, useState } from "react"
-import { Match, MissionSwipe } from "../types/match"
 interface AppContextType {
   matches: Match[]
   pendingSwipes: MissionSwipe[]

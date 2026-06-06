@@ -1,4 +1,4 @@
-import { API_URL } from "@/constants"
+import { API_URL } from "@/constants/constants"
 import * as SecureStore from "expo-secure-store"
 
 //function to make authenticated API requests using the stored JWT token

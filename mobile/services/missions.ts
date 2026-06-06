@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { CreateMissionData, UpdateMissionData } from '@/app/types/mission'
+import { CreateMissionData, UpdateMissionData } from '@/types/mission'
 import { request } from "./api"
 
 // Query keys

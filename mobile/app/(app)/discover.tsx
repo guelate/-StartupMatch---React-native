@@ -10,13 +10,11 @@ import { useState } from "react"
 import { useMissions } from "../../services/missions"
 import { useProfiles } from "../../services/profiles"
 import { useSwipeMission, useSwipeProfile } from "../../services/swipes"
-import { useAuth } from "../context/auth"
+import { useAuth } from "@/context/auth"
 
 const { width } = Dimensions.get("window")
 
 //TODO: refactoring 
-
-
 export default function DiscoverScreen() {
     // Get current user role to display correct feed
     const { isFounder } = useAuth()
