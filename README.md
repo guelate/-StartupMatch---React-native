@@ -100,7 +100,7 @@ pnpm install
  
 Edit `.env` with your values:
 ```env
-DATABASE_URL="postgresql://user:password@localhost:5432/startupMatch"
+DATABASE_URL="postgresql://user:user@localhost:5432/startupMatch"
 JWT_SECRET="your_jwt_secret"
 ```
  
