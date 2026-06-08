@@ -11,7 +11,7 @@ import { useRouter } from "expo-router"
 import { authService } from "../../services/auth"
 import { useAuth } from "@/context/auth"
 
-//TODO: refactoring 
+//TODO: refactoring and split components
 export default function RegisterScreen() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
@@ -39,6 +39,7 @@ export default function RegisterScreen() {
       setUser(user)
 
     } catch (e) {
+      console.log("❌ Register error:", e) 
       setError("Une erreur est survenue")
     } finally {
       setIsLoading(false)

@@ -10,14 +10,14 @@ import { useState } from "react"
 import { useMissions } from "../../services/missions"
 import { useProfiles } from "../../services/profiles"
 import { useSwipeMission, useSwipeProfile } from "../../services/swipes"
-import { useAuth } from "@/context/auth"
+import { useAuth } from "../../context/auth"  // ← chemin relatif ✅
 
 const { width } = Dimensions.get("window")
 
-//TODO: refactoring 
+//Todo: refactoring 
 export default function DiscoverScreen() {
     // Get current user role to display correct feed
-    const { isFounder } = useAuth()
+    const { isFounder, user } = useAuth()
 
     // Track which card is currently displayed
     const [currentIndex, setCurrentIndex] = useState(0)
@@ -36,41 +36,32 @@ export default function DiscoverScreen() {
         error: profilesError,
     } = useProfiles()
 
-    // Swipe mutations
+    // Log after all hooks ✅
+    console.log("👤 Current user:", user)
+    console.log("🏠 isFounder:", isFounder)
+    console.log("📋 Missions:", missions, "Error:", missionsError)
+    console.log("👥 Profiles:", profiles, "Error:", profilesError)
+
     const { mutate: swipeMission } = useSwipeMission()
     const { mutate: swipeProfile } = useSwipeProfile()
 
-    // Display correct data based on user role
     const data = isFounder ? profiles : missions
     const isLoading = isFounder ? profilesLoading : missionsLoading
     const error = isFounder ? profilesError : missionsError
-
-    // Current card to display
     const currentItem = data?.[currentIndex]
 
-    // Handle swipe action — LIKE or DISLIKE
     const handleSwipe = (direction: "LIKE" | "DISLIKE") => {
         if (!currentItem) return
 
         if (isFounder) {
-            // FOUNDER swipes a developer profile
-            swipeProfile({
-                developerId: currentItem.id,
-                direction,
-            })
+            swipeProfile({ developerId: currentItem.id, direction })
         } else {
-            // DEVELOPER swipes a mission
-            swipeMission({
-                missionId: currentItem.id,
-                direction,
-            })
+            swipeMission({ missionId: currentItem.id, direction })
         }
 
-        // Move to next card
         setCurrentIndex((prev) => prev + 1)
     }
 
-    // Loading state
     if (isLoading) {
         return (
             <View style={styles.centered}>
@@ -79,7 +70,6 @@ export default function DiscoverScreen() {
         )
     }
 
-    // Error state
     if (error) {
         return (
             <View style={styles.centered}>
@@ -88,7 +78,6 @@ export default function DiscoverScreen() {
         )
     }
 
-    // Empty state — no more cards to display
     if (!currentItem) {
         return (
             <View style={styles.centered}>
@@ -106,7 +95,6 @@ export default function DiscoverScreen() {
 
     return (
         <View style={styles.container}>
-
             <Text style={styles.title}>Découvrir</Text>
             <Text style={styles.subtitle}>
                 {isFounder
@@ -115,15 +103,12 @@ export default function DiscoverScreen() {
                 }
             </Text>
 
-            {/* Current swipe card */}
             <View style={styles.card}>
-
                 <Text style={styles.cardAvatar}>
                     {isFounder ? "💻" : "🚀"}
                 </Text>
 
                 {isFounder ? (
-                    // FOUNDER sees a developer profile
                     <>
                         <Text style={styles.cardName}>{currentItem.name}</Text>
                         <Text style={styles.cardRole}>Développeur</Text>
@@ -132,7 +117,6 @@ export default function DiscoverScreen() {
                         <Text style={styles.cardBio}>{currentItem.bio}</Text>
                     </>
                 ) : (
-                    // DEVELOPER sees a mission
                     <>
                         <Text style={styles.cardName}>{currentItem.title}</Text>
                         <Text style={styles.cardRole}>Mission</Text>
@@ -142,14 +126,11 @@ export default function DiscoverScreen() {
                     </>
                 )}
 
-                {/* Card counter */}
                 <Text style={styles.counter}>
                     {currentIndex + 1} / {data?.length}
                 </Text>
-
             </View>
 
-            {/* Swipe action buttons */}
             <View style={styles.actions}>
                 <TouchableOpacity
                     style={[styles.actionButton, styles.dislikeButton]}
@@ -167,7 +148,6 @@ export default function DiscoverScreen() {
                     <Text style={styles.likeText}>Liker</Text>
                 </TouchableOpacity>
             </View>
-
         </View>
     )
 }
