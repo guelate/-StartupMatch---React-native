@@ -1,23 +1,20 @@
-import { storage } from "../utils/storage" 
+import { API_URL } from "@/constants/constants"
+import * as SecureStore from "expo-secure-store"
 
-const API_URL = "http://localhost:3000"
-
+//function to make authenticated API requests using the stored JWT token
 export const request = async (endpoint: string, options?: RequestInit) => {
-  // Get JWT token from storage (web: localStorage, mobile: SecureStore)
-  const token = await storage.getItem("token")  
-
-  console.log("📡 Request:", endpoint, options?.method ?? "GET")
+  // Get JWT token from SecureStore
+  const token = await SecureStore.getItemAsync("token")
 
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",
+      // Add Authorization header if token exists
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...options?.headers,
     },
   })
-
-  console.log("📡 Response status:", response.status)
 
   if (!response.ok) {
     throw new Error(`HTTP error: ${response.status}`)

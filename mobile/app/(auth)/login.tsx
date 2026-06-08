@@ -11,7 +11,7 @@ import { useRouter } from "expo-router"
 import { authService } from "../../services/auth"
 import { useAuth } from "@/context/auth"
 
-//TODO: refactoring and split components
+//TODO: refactoring
 export default function LoginScreen() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")

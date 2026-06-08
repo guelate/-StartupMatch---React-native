@@ -10,7 +10,6 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | null>(null)
 
-//provider  manages global matches and pending swipes state
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [matches, setMatches] = useState<Match[]>([])
   const [pendingSwipes, setPendingSwipes] = useState<MissionSwipe[]>([])
