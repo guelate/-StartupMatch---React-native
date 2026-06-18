@@ -1,54 +1,39 @@
-# name: CI Pipeline
-
-# #work on main branch and on pull requests to main
-# on:
-#   push:
-#     branches: [main]
-#   pull_request:
-#     branches: [main]
-
-# jobs:                       
-#   backend-lint: #first job in the pipeline
-#     name: Backend Lint #name of the job displayed in GitHub Actions UI
-#     runs-on: ubuntu-latest 
-
-#     steps:
-#       # Clone the repository on the virtual machine
-#       - name: Checkout code 
-#         uses: actions/checkout@v4 #clone the repo to the runner (ubuntu-latest) so that we can run the linting on the code
-
-#       # Install Node.js version 20
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v4
-#         with: #use the latest version of Node.js 20. With in github CI / CD is keyword to specify argument of parameter 
-#           node-version: '20'
-
-#       # Install pnpm
-#       - name: Install pnpm
-#         uses: pnpm/action-setup@v4
-#         with:
-#           version: 9
-
-#       # Install backend dependencies
-#       - name: Install dependencies
-#         run: cd backend && pnpm install
-
-#       # Run ESLint — blocks pipeline if errors ❌
-#       - name: Run lint
-#         run: cd backend && pnpm run lint
-
 name: CI Pipeline
 
+#work on main branch and on pull requests to main
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
 
-jobs:
-  hello:
-    name: Hello World
-    runs-on: ubuntu-latest
+jobs:                       
+  backend-lint: #first job in the pipeline
+    name: Backend Lint #name of the job displayed in GitHub Actions UI
+    runs-on: ubuntu-latest 
+
     steps:
-      - name: Say hello
-        run: echo "Hello World!"
+      # Clone the repository on the virtual machine
+      - name: Checkout code 
+        uses: actions/checkout@v4 #clone the repo to the runner (ubuntu-latest) so that we can run the linting on the code
+
+      # Install Node.js version 20
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with: #use the latest version of Node.js 20. With in github CI / CD is keyword to specify argument of parameter 
+          node-version: '20'
+
+      # Install pnpm
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      # Install backend dependencies
+      - name: Install dependencies
+        run: cd backend && pnpm install
+
+      # Run ESLint — blocks pipeline if errors 
+      - name: Run lint
+        run: cd backend && pnpm run lint
+
