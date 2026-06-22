@@ -7,6 +7,10 @@ on:
   pull_request:
     branches: [main]
 
+# If a want that works on any branch:
+# on:
+#   push:
+
 jobs:
   backend-lint: #first job in the pipeline: step on test for quality code
     name: Backend Lint #name of the job displayed in GitHub Actions UI
@@ -66,6 +70,7 @@ jobs:
   #         tags: |
   #           ghcr.io/${{ github.repository }}/backend:latest
   #           ghcr.io/${{ github.repository }}/backend:${{ github.sha }}
+
   # backend-deploy:
   #   name: Update K8s Manifest
   #   runs-on: ubuntu-latest
@@ -105,3 +110,11 @@ jobs:
 # → Name: INFRA_REPO_TOKEN
 # → Value: ton Personal Access Token
 
+# ❌ Version manuelle verbose
+# - run: docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+# - run: docker build -t ghcr.io/guelate/backend:latest ./backend
+# - run: docker push ghcr.io/guelate/backend:latest
+
+# # ✅ Version avec actions — fait exactement la même chose
+# - uses: docker/login-action@v3
+# - uses: docker/build-push-action@v5
