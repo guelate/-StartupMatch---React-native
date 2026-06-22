@@ -94,3 +94,14 @@ jobs:
   #         git add k8s/deployment.yaml
   #         git commit -m "ci: update backend image to ${{ github.sha }}"
   #         git push
+
+
+# DANS LE README METTRE LES ETAPES DE SETTING: ( reprendre l'historique claude)
+# Ton repo GitHub
+# → Settings
+# → Secrets and variables
+# → Actions
+# → New repository secret
+# → Name: INFRA_REPO_TOKEN
+# → Value: ton Personal Access Token
+
