@@ -68,14 +68,16 @@ jobs:
           context: ./backend # ← folder containing the Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/backend:latest
-            ghcr.io/${{ github.repository }}/backend:${{ github.sha }}
+            ghcr.io/guelate/startupmatch-backend:latest
+            ghcr.io/guelate/startupmatch-backend:${{ github.sha }}
+          
 
   # backend-deploy:
   #   name: Update K8s Manifest
   #   runs-on: ubuntu-latest
   #   needs: backend-build # ← wait for Docker image to be built and pushed
-
+  # ghcr.io/${{ github.repository }}/backend:latest
+            # ghcr.io/${{ github.repository }}/backend:${{ github.sha }}
   #   steps:
   #     # Clone the INFRA repo (not the app repo)
   #     # This is where ArgoCD watches for changes
