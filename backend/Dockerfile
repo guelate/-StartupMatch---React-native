@@ -7,7 +7,12 @@ COPY package*.json ./
 RUN npm install
 
 #Copy source code after npm install for Docker cache
+#after each push if package.json or package-lock.json is not changed, Docker will use the cache and skip npm install step
+#we copy just source code changed
 COPY . . 
+
+# Generate Prisma client before building
+RUN npx prisma generate 
 
 RUN npm run build
 
