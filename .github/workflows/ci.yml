@@ -41,35 +41,35 @@ jobs:
       # - name: Run lint
       #   run: cd backend && pnpm run lint
 
-  # backend-build:
-  #   name: Backend Build & Push Docker Image
-  #   runs-on: ubuntu-latest
-  #   # needs: backend-lint  #wait for linting job to finish before starting the build job
+  backend-build:
+    name: Backend Build & Push Docker Image
+    runs-on: ubuntu-latest
+    # needs: backend-lint  #wait for linting job to finish before starting the build job
 
-  #   steps:
-  #     # Clone the repository on the virtual machine
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
+    steps:
+      # Clone the repository on the virtual machine
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-  #     # Login to GitHub Container Registry
-  #     - name: Login to GHCR
-  #       uses: docker/login-action@v3
-  #       with:
-  #         registry: ghcr.io
-  #         username: ${{ github.actor }}
-  #         password: ${{ secrets.GITHUB_TOKEN }}
+      # Login to GitHub Container Registry
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-  #     # Build and push Docker image with two tags
-  #     # :latest → always the latest version
-  #     # :sha    → unique identifier per commit for unique version
-  #     - name: Build and push Docker image
-  #       uses: docker/build-push-action@v5
-  #       with:
-  #         context: ./backend # ← folder containing the Dockerfile
-  #         push: true
-  #         tags: |
-  #           ghcr.io/${{ github.repository }}/backend:latest
-  #           ghcr.io/${{ github.repository }}/backend:${{ github.sha }}
+      # Build and push Docker image with two tags
+      # :latest → always the latest version
+      # :sha    → unique identifier per commit for unique version
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend # ← folder containing the Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/backend:latest
+            ghcr.io/${{ github.repository }}/backend:${{ github.sha }}
 
   # backend-deploy:
   #   name: Update K8s Manifest
@@ -118,3 +118,21 @@ jobs:
 # # ✅ Version avec actions — fait exactement la même chose
 # - uses: docker/login-action@v3
 # - uses: docker/build-push-action@v5
+
+
+#Faire une partie doc dans le readme 
+# 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
+#todo: explain how to build and push image on Github container registry. 
+# To build image: docker build -t ghcr.io/<username>/<repo>:<tag> .
+# To push image: docker push ghcr.io/<username>/<repo>:<tag>
+
+# Run image:
+# docker run ghcr.io/guelate/backend:latest
+#         ↓
+# Docker cherche l'image en local
+#         ↓
+# ❌ Image non trouvée localement (si elle a été supprimée de docker)
+#         ↓
+# Docker pull automatiquement depuis GHCR
+#         ↓
+# ✅ Image téléchargée et container lancé
