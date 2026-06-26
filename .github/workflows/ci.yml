@@ -121,7 +121,6 @@ jobs:
 
 
 #Faire une partie doc dans le readme 
-# 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
 #todo: explain how to build and push image on Github container registry. 
 # To build image: docker build -t ghcr.io/<username>/<repo>:<tag> .
 # To push image: docker push ghcr.io/<username>/<repo>:<tag>
