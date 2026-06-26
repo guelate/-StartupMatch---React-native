@@ -172,3 +172,16 @@ npx prisma migrate reset
  
 This will drop all tables, re-run migrations and seed the database automatically.
  
+# To build image: docker build -t ghcr.io/<username>/<repo>:<tag> .
+# To push image: docker push ghcr.io/<username>/<repo>:<tag>
+
+# Run image:
+# docker run ghcr.io/guelate/backend:latest
+#         ↓
+# Docker cherche l'image en local
+#         ↓
+# ❌ Image non trouvée localement (si elle a été supprimée de docker)
+#         ↓
+# Docker pull automatiquement depuis GHCR
+#         ↓
+# ✅ Image téléchargée et container lancé
