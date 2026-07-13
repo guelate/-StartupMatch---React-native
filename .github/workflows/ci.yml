@@ -84,7 +84,7 @@ jobs:
         - name: Checkout infra repo
           uses: actions/checkout@v4
           with:
-            repository: guelate/StarupMatch-Infra
+            repository: guelate/StartupMatch-Infra
             token: ${{ secrets.INFRA_REPO_TOKEN }}
 
         # Replace the old image tag with the new commit sha
